@@ -1,3 +1,4 @@
+import { fontFamily } from 'tailwindcss/defaultTheme';
 module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
@@ -8,6 +9,7 @@ module.exports = {
     fontFamily: {
       display: ['Open Sans', 'sans-serif'],
       body: ['Open Sans', 'sans-serif'],
+      sans: ["var(--font-sans)", ...fontFamily.sans],
     },
     extend: {
       fontSize: {
@@ -45,7 +47,21 @@ module.exports = {
         'hero-pattern':
           "url('https://i.postimg.cc/Fz1HHQ5v/Snipaste-2023-10-15-20-49-01.png')",
       },
+      keyframes: {
+        "accordion-down": {
+          from: { height: 0 },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: 0 },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
