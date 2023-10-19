@@ -1,4 +1,5 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
+
 module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',

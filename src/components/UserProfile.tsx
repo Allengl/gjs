@@ -2,9 +2,9 @@ import React from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 
 import { Button } from '@/components/index';
-import { userProfileData } from '@/app/data/dummy';
+import { userProfileData } from '@/data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
-import avatar from '@/app/data/avatar.jpg';
+import avatar from '@/data/avatar.jpg';
 import Image from 'next/image';
 
 const UserProfile = () => {

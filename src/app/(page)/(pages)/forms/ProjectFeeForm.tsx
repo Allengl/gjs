@@ -12,7 +12,32 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import React from 'react'
+import { TaxpayerTalbe } from './tables/taxpayer-table'
+import { Payment, taxpayerColumn } from "./columns/taxpayer-column"
+import { Textarea } from "@/components/ui/textarea"
 
+
+const data: Payment[] = [
+  {
+    id: "728ed52f",
+    amount: 100,
+    status: "pending",
+    email: "m@example.com",
+  },
+  {
+    id: "728ed52f",
+    amount: 100,
+    status: "pending",
+    email: "1@qq.com"
+  },
+  {
+    id: "728ed52f",
+    amount: 100,
+    status: "pending",
+    email: ""
+  }
+]
+// ...
 
 
 const formSchema = z
@@ -33,6 +58,7 @@ const formSchema = z
   })
 
 const ProjectFeeForm = (props) => {
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,8 +69,8 @@ const ProjectFeeForm = (props) => {
     },
   })
 
-  const onSubmit = async(values: z.infer<typeof formSchema>) => {
-  
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+
     const response = await fetch('/api/user', {
       method: 'POST',
       headers: {
@@ -55,7 +81,7 @@ const ProjectFeeForm = (props) => {
         email: values.email,
         password: values.password
       })
-  })
+    })
 
     // if(response.ok) {
     //   router.push('/sign-in')
@@ -68,75 +94,148 @@ const ProjectFeeForm = (props) => {
     // }
   }
 
-  
+
   return (
-    <Card className='m-3 lg:w-2/3 p-3'>
-      <Panel header="项目信息">
-            <p className="m-0">
-            <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <div className="space-y-2">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>凭证编号：</FormLabel>
-                <FormControl>
-                  <Input className='w-4' placeholder="请输入凭证编号" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>WBS元素</FormLabel>
-                <FormControl>
-                  <Input placeholder="mail@example.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>物料号</FormLabel>
-                <FormControl>
-                  <Input className='w-3' placeholder="请输入物料号" type="password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>确认密码</FormLabel>
-                <FormControl>
-                  <Input placeholder="请重新输入密码" type="password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <Button className="w-full mt-6 bg-black text-white p-2 rounded-lg mb-6 hover:text-gray hover:border" type="submit">
-          注册
-        </Button>
-      </form>
-    </Form>
-            </p>
-        </Panel>
-    </Card>
+    <p className="m-0">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+          {/* <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>凭证编号：</FormLabel>
+                    <FormControl>
+                      <Input className='w-4' placeholder="请输入凭证编号" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>WBS元素</FormLabel>
+                    <FormControl>
+                      <Input placeholder="mail@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>物料号</FormLabel>
+                    <FormControl>
+                      <Input className='w-3' placeholder="请输入物料号" type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>书名</FormLabel>
+                    <FormControl>
+                      <Input placeholder="请输入书名" type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Button className="w-full mt-6 bg-black text-white p-2 rounded-lg mb-6 hover:text-gray hover:border" type="submit">
+              提交
+            </Button> */}
+          <div className='space-y-5'>
+            <Panel header="项目信息">
+              <div className="grid grid-cols-4 grid-rows-6 gap-3">
+                <div className="col-span-2">1</div>
+                <div className="row-start-2">2</div>
+                <div className="col-span-3 row-start-2">3</div>
+                <div className="row-start-3">4</div>
+                <div className="col-span-3 row-start-3">5</div>
+                <div className="col-span-4 row-start-4">6</div>
+                <div className="col-span-3 row-start-5">7</div>
+                <div className="col-start-4 row-start-5">11</div>
+                <div className="row-start-6">13</div>
+                <div className="row-start-6">14</div>
+                <div className="row-start-6">15</div>
+                <div className="row-start-6">16</div>
+              </div>
+            </Panel>
+            <Panel header="费用计入">
+              <div className="grid grid-cols-3 grid-rows-3 gap-4">
+                <div >1</div>
+                <div className="col-span-2">2</div>
+                <div className="row-start-2">3</div>
+                <div className="row-start-3">5</div>
+                <div className="row-start-3">6</div>
+                <div className="row-start-3">7</div>
+              </div>
+            </Panel>
+            <Panel header="付款标准">
+
+              <div className="grid grid-cols-4 grid-rows-3 gap-4">
+                <div >1</div>
+                <div >2</div>
+                <div >3</div>
+                <div >4</div>
+                <div className="col-span-2">5</div>
+                <div className="col-span-2 col-start-3">6</div>
+                <div className="col-span-2 row-start-3">8</div>
+                <div className="col-span-2 col-start-3 row-start-3">9</div>
+              </div>
+            </Panel>
+            <Panel header="付款信息">
+              <div className="grid grid-cols-3 grid-rows-2 gap-4">
+                <div >1</div>
+                <div className="row-start-2">2</div>
+                <div className="row-start-2">3</div>
+                <div className="row-start-2">4</div>
+              </div>
+            </Panel>
+            <Panel header='收款人信息'>
+              <div className="grid grid-cols-3 grid-rows-5 gap-4">
+                <div className="col-span-2">1</div>
+                <div className="col-start-3">2</div>
+                <div className="col-span-2 row-start-2">3</div>
+                <div className="col-start-3 row-start-2">4</div>
+                <div className="col-span-2 row-start-3">5</div>
+                <div className="col-start-3 row-start-3">6</div>
+                <div className="row-start-4">7</div>
+                <div className="row-start-4">8</div>
+                <div className="row-start-4">9</div>
+                <div >10</div>
+                <div className="col-span-2 row-start-5">11</div>
+              </div>
+            </Panel>
+            <Panel header='计税人信息'>
+              <div className="container mx-auto py-10">
+                <TaxpayerTalbe columns={taxpayerColumn} data={data} />
+              </div>
+            </Panel>
+            <Panel header="备注">
+              <div>
+                <Textarea placeholder="Type your message here." />
+              </div>
+            </Panel>
+            <Panel header="附件上传">
+              
+            </Panel>
+          </div >
+        </form>
+      </Form>
+    </p>
   )
 }
 

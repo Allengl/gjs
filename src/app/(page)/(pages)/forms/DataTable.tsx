@@ -17,6 +17,7 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { Card } from 'primereact/card';
+import ProjectFeeForm from './ProjectFeeForm';
 
 
 interface Product {
@@ -40,6 +41,7 @@ export default function ProductsDemo(props) {
   const [deleteProductsDialog, setDeleteProductsDialog] = useState<boolean>(false);
   const [product, setProduct] = useState<Product>(emptyProduct);
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product>(emptyProduct);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [globalFilter, setGlobalFilter] = useState<string>('');
   const toast = useRef<Toast>(null);
@@ -186,23 +188,28 @@ export default function ProductsDemo(props) {
   const leftToolbarTemplate = () => {
     return (
       <div className="flex ml-4 flex-wrap gap-5">
-        <Button label="New" icon="pi pi-plus" severity="success" onClick={openNew} />
-        <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} />
-        <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+        <Button label="新增" icon="pi pi-plus" severity="success" onClick={openNew} />
+        <Button label="删除" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} />
       </div>
     );
   };
 
   const rightToolbarTemplate = () => {
-    return
+    return (
+      <div className="flex ml-4 flex-wrap gap-5">
+        <Button label="导出" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+        <Button label="审批记录" icon="pi pi-file" className="p-button-list" onClick={exportCSV} />
+      </div>
+    )
   };
 
   const header = (
+
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0">搜索</h4>
+      <h4 className="m-auto text-size">搜索</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
-        <InputText type="search" placeholder="Search..." onInput={(e) => { const target = e.target as HTMLInputElement; setGlobalFilter(target.value); }} />
+        <InputText className='w-full' type="search" placeholder="Search..." onInput={(e) => { const target = e.target as HTMLInputElement; setGlobalFilter(target.value); }} />
       </span>
     </div>
   );
@@ -226,98 +233,112 @@ export default function ProductsDemo(props) {
   );
 
   return (
-      <Card className='m-3 lg:w-1/3 p-3' title="项目费用单">
+    <Card className='w-full'>
+      <Card title="项目费用单" className='grid grid-cols-1 md:flex flex-row'>
         <Toast ref={toast} />
-        <div className="card">
-          <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+        <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+        <div className='grid grid-cols-3 gap-3'>
+          <div className='mt-2 col-span-1 m-2 '>
+            <DataTable
+              showGridlines
+              className='p-datatable-header	p-datatable-footer'
+              ref={dt} value={products} selection={selectedProduct}
+              onSelectionChange={(e) => {
+                // if (Array.isArray(e.value)) {
+                //   setSelectedProducts(e.value);
+                // }
+                setSelectedProduct(e.value);
+              }}
+              dataKey="id" paginator rows={10} 
+              rowsPerPageOptions={[5, 10, 25]}
+              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} 
+              header={header}>
+              <Column selectionMode="single" exportable={false}></Column>
+              <Column field="code" header="费用记录类型" sortable style={{ minWidth: '5rem' }}></Column>
+              <Column field="name" header="对象号" sortable style={{ minWidth: '5rem' }}></Column>
+              <Column field="description" header="对象描述" sortable style={{ minWidth: '5rem' }}></Column>
+            </DataTable>
+          </div>
+          <div className='m-2 col-span-2'>
+            <ProjectFeeForm />
+          </div>
+        </div>
+      </Card>
 
-          <DataTable ref={dt} value={products} selection={selectedProducts}
-            onSelectionChange={(e) => {
-              if (Array.isArray(e.value)) {
-                setSelectedProducts(e.value);
-              }
-            }}
-            dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
-            <Column selectionMode="multiple" exportable={false}></Column>
-            <Column field="code" header="费用记录类型" sortable style={{ minWidth: '5rem' }}></Column>
-            <Column field="name" header="对象号" sortable style={{ minWidth: '5rem' }}></Column>
-            <Column field="description" header="对象描述" sortable style={{ minWidth: '5rem' }}></Column>
-          </DataTable>
+
+
+      <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+        {product.image && <img src={`https://primefaces.org/cdn/primereact/images/product/${product.image}`} alt={product.image} className="product-image block m-auto pb-3" />}
+        <div className="field">
+          <label htmlFor="name" className="font-bold">
+            Name
+          </label>
+          <InputText id="name" value={product.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
+          {submitted && !product.name && <small className="p-error">Name is required.</small>}
+        </div>
+        <div className="field">
+          <label htmlFor="description" className="font-bold">
+            Description
+          </label>
+          <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
         </div>
 
-        <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-          {product.image && <img src={`https://primefaces.org/cdn/primereact/images/product/${product.image}`} alt={product.image} className="product-image block m-auto pb-3" />}
-          <div className="field">
-            <label htmlFor="name" className="font-bold">
-              Name
-            </label>
-            <InputText id="name" value={product.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
-            {submitted && !product.name && <small className="p-error">Name is required.</small>}
-          </div>
-          <div className="field">
-            <label htmlFor="description" className="font-bold">
-              Description
-            </label>
-            <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
-          </div>
-
-          <div className="field">
-            <label className="mb-3 font-bold">Category</label>
-            <div className="formgrid grid">
-              <div className="field-radiobutton col-6">
-                <RadioButton inputId="category1" name="category" value="Accessories" onChange={onCategoryChange} checked={product.category === 'Accessories'} />
-                <label htmlFor="category1">Accessories</label>
-              </div>
-              <div className="field-radiobutton col-6">
-                <RadioButton inputId="category2" name="category" value="Clothing" onChange={onCategoryChange} checked={product.category === 'Clothing'} />
-                <label htmlFor="category2">Clothing</label>
-              </div>
-              <div className="field-radiobutton col-6">
-                <RadioButton inputId="category3" name="category" value="Electronics" onChange={onCategoryChange} checked={product.category === 'Electronics'} />
-                <label htmlFor="category3">Electronics</label>
-              </div>
-              <div className="field-radiobutton col-6">
-                <RadioButton inputId="category4" name="category" value="Fitness" onChange={onCategoryChange} checked={product.category === 'Fitness'} />
-                <label htmlFor="category4">Fitness</label>
-              </div>
-            </div>
-          </div>
-
+        <div className="field">
+          <label className="mb-3 font-bold">Category</label>
           <div className="formgrid grid">
-            <div className="field col">
-              <label htmlFor="price" className="font-bold">
-                Price
-              </label>
-              <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
+            <div className="field-radiobutton col-6">
+              <RadioButton inputId="category1" name="category" value="Accessories" onChange={onCategoryChange} checked={product.category === 'Accessories'} />
+              <label htmlFor="category1">Accessories</label>
             </div>
-            <div className="field col">
-              <label htmlFor="quantity" className="font-bold">
-                Quantity
-              </label>
-              <InputNumber id="quantity" value={product.quantity} onValueChange={(e) => onInputNumberChange(e, 'quantity')} />
+            <div className="field-radiobutton col-6">
+              <RadioButton inputId="category2" name="category" value="Clothing" onChange={onCategoryChange} checked={product.category === 'Clothing'} />
+              <label htmlFor="category2">Clothing</label>
+            </div>
+            <div className="field-radiobutton col-6">
+              <RadioButton inputId="category3" name="category" value="Electronics" onChange={onCategoryChange} checked={product.category === 'Electronics'} />
+              <label htmlFor="category3">Electronics</label>
+            </div>
+            <div className="field-radiobutton col-6">
+              <RadioButton inputId="category4" name="category" value="Fitness" onChange={onCategoryChange} checked={product.category === 'Fitness'} />
+              <label htmlFor="category4">Fitness</label>
             </div>
           </div>
-        </Dialog>
+        </div>
 
-        <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
-          <div className="confirmation-content">
-            <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-            {product && (
-              <span>
-                Are you sure you want to delete <b>{product.name}</b>?
-              </span>
-            )}
+        <div className="formgrid grid">
+          <div className="field col">
+            <label htmlFor="price" className="font-bold">
+              Price
+            </label>
+            <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
           </div>
-        </Dialog>
+          <div className="field col">
+            <label htmlFor="quantity" className="font-bold">
+              Quantity
+            </label>
+            <InputNumber id="quantity" value={product.quantity} onValueChange={(e) => onInputNumberChange(e, 'quantity')} />
+          </div>
+        </div>
+      </Dialog>
 
-        <Dialog visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
-          <div className="confirmation-content">
-            <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-            {product && <span>Are you sure you want to delete the selected products?</span>}
-          </div>
-        </Dialog>
-      </Card>
+      <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+        <div className="confirmation-content">
+          <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+          {product && (
+            <span>
+              Are you sure you want to delete <b>{product.name}</b>?
+            </span>
+          )}
+        </div>
+      </Dialog>
+
+      <Dialog visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
+        <div className="confirmation-content">
+          <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+          {product && <span>Are you sure you want to delete the selected products?</span>}
+        </div>
+      </Dialog>
+    </Card>
   );
 }

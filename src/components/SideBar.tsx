@@ -2,7 +2,7 @@
 'use client'
 import React from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
-import { links } from '../app/data/dummy';
+import { links } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 import Link from 'next/link';
 import { BiLogoFirebase } from 'react-icons/bi';

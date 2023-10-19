@@ -28,7 +28,7 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
           />
           {/* <!-- text on image  --> */}
           <div
-            className="absolute hidden bottom-10 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block"
+            className="absolute hidden bottom-10 right-6 p-6 bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block"
           >
             <span className="text-white text-xl"
               >We've been uesing Untitle to kick"<br />start every new project
