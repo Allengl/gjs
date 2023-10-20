@@ -10,7 +10,7 @@ export const PagesLayout = ({
       <NavAndSide>
         {children}
       </NavAndSide>
-      <ToolTipComponent />
+      {/* <ToolTipComponent /> */}
     </div>
   )
 }

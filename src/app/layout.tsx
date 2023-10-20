@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-import type { Metadata } from 'next'
 import { Inter as FontSans } from "next/font/google"
 import Provider from '@/components/Provider'
 import { cn } from '@/lib/utils'
@@ -20,7 +19,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
 
       <body  className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-main-bg font-sans antialiased",
           fontSans.variable
         )}>
         <Provider>

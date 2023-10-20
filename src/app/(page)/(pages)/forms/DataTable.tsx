@@ -237,11 +237,12 @@ export default function ProductsDemo(props) {
       <Card title="项目费用单" className='grid grid-cols-1 md:flex flex-row'>
         <Toast ref={toast} />
         <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-        <div className='grid grid-cols-3 gap-3'>
-          <div className='mt-2 col-span-1 m-2 '>
+        <div className='grid grid-cols-5 gap-3'>
+          <div className='mt-2 col-span-2  '>
             <DataTable
               showGridlines
-              className='p-datatable-header	p-datatable-footer'
+              columnResizeMode='fit'
+              className='h-screen overflow-scroll p-datatable-header	p-datatable-footer'
               ref={dt} value={products} selection={selectedProduct}
               onSelectionChange={(e) => {
                 // if (Array.isArray(e.value)) {
@@ -249,18 +250,19 @@ export default function ProductsDemo(props) {
                 // }
                 setSelectedProduct(e.value);
               }}
-              dataKey="id" paginator rows={10} 
+              dataKey="id" paginator rows={10}
               rowsPerPageOptions={[5, 10, 25]}
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} 
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter}
               header={header}>
               <Column selectionMode="single" exportable={false}></Column>
-              <Column field="code" header="费用记录类型" sortable style={{ minWidth: '5rem' }}></Column>
-              <Column field="name" header="对象号" sortable style={{ minWidth: '5rem' }}></Column>
-              <Column field="description" header="对象描述" sortable style={{ minWidth: '5rem' }}></Column>
+              <Column field="code" header="费用记录类型" 
+              style={{ width: '10rem', minWidth:'10rem' }}></Column>
+              <Column field="name" header="对象号" style={{ minWidth: '4rem' }}></Column>
+              <Column field="description" header="对象描述" style={{ minWidth: '4rem' }}></Column>
             </DataTable>
           </div>
-          <div className='m-2 col-span-2'>
+          <div className='m-2 col-span-3'>
             <ProjectFeeForm />
           </div>
         </div>

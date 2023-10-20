@@ -51,7 +51,7 @@ interface NavButtonProps {
   dotColor?: string
 }
 
-const NavButton: FC<NavButtonProps> = ({ title, customFunc, icon, color, dotColor }) => (
+export const NavButton: FC<NavButtonProps> = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipProvider>
     <Tooltip>
       <TooltipTrigger>
