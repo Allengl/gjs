@@ -17,7 +17,7 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { Card } from 'primereact/card';
-import ProjectFeeForm from './ProjectFeeForm';
+import ProjectFeeForm from './ProjectCostForm';
 
 
 interface Product {
@@ -27,7 +27,7 @@ interface Product {
   objdesc: string;
 }
 
-export default function ProductsDemo(props) {
+export default function ProjectCostTable(props) {
   let emptyProduct: Product = {
     id: null,
     feetype: '',
@@ -160,7 +160,6 @@ export default function ProductsDemo(props) {
 
   const onCategoryChange = (e: RadioButtonChangeEvent) => {
     let _product = { ...product };
-
     _product['category'] = e.value;
     setProduct(_product);
   };
@@ -198,7 +197,7 @@ export default function ProductsDemo(props) {
     return (
       <div className="flex ml-4 flex-wrap gap-5">
         <Button label="导出" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
-        <Button label="审批记录" icon="pi pi-file" className="p-button-list" onClick={exportCSV} />
+        <Button label="审批记录" icon="pi pi-file" className="p-button-list" />
       </div>
     )
   };
@@ -206,7 +205,7 @@ export default function ProductsDemo(props) {
   const header = (
 
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-auto text-size">搜索</h4>
+      <h4 className="text-size">搜索</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText className='w-full' type="search" placeholder="Search..." onInput={(e) => { const target = e.target as HTMLInputElement; setGlobalFilter(target.value); }} />
@@ -237,38 +236,34 @@ export default function ProductsDemo(props) {
       <Card title="项目费用单" className='grid grid-cols-1 md:flex flex-row'>
         <Toast ref={toast} />
         <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-        <div className='grid grid-cols-5 gap-3'>
-          <div className='mt-2 col-span-2  '>
-            <DataTable
-              showGridlines
-              columnResizeMode='fit'
-              className='h-screen overflow-scroll p-datatable-header	p-datatable-footer'
-              ref={dt} value={products} selection={selectedProduct}
-              onSelectionChange={(e) => {
-                // if (Array.isArray(e.value)) {
-                //   setSelectedProducts(e.value);
-                // }
-                setSelectedProduct(e.value);
-              }}
-              dataKey="id" paginator rows={10}
-              rowsPerPageOptions={[5, 10, 25]}
-              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter}
-              header={header}>
-              <Column selectionMode="single" exportable={false}></Column>
-              <Column field="code" header="费用记录类型" 
-              style={{ width: '10rem', minWidth:'10rem' }}></Column>
-              <Column field="name" header="对象号" style={{ minWidth: '4rem' }}></Column>
-              <Column field="description" header="对象描述" style={{ minWidth: '4rem' }}></Column>
-            </DataTable>
-          </div>
-          <div className='m-2 col-span-3'>
-            <ProjectFeeForm />
-          </div>
+        <div className='mt-2'>
+          <DataTable
+            showGridlines
+            columnResizeMode='fit'
+            className='h-screen overflow-scroll p-datatable-header	p-datatable-footer'
+            ref={dt} value={products} selection={selectedProducts}
+            onSelectionChange={(e) => {
+              if (Array.isArray(e.value)) {
+                setSelectedProducts(e.value);
+              }
+            }}
+            dataKey="id" paginator rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter}
+            header={header}>
+            <Column selectionMode="multiple" exportable={false}></Column>
+            <Column field="code" header="费用记录类型"
+              style={{ width: '10rem', minWidth: '10rem' }}></Column>
+            <Column field="name" header="对象号" style={{ minWidth: '4rem' }}></Column>
+            <Column field="description" header="对象描述" style={{ minWidth: '4rem' }}></Column>
+            <Column field="description" header="所属部门" style={{ minWidth: '4rem' }}></Column>
+            <Column field="description" header="书名" style={{ minWidth: '4rem' }}></Column>
+            <Column field="description" header="物料号" style={{ minWidth: '4rem' }}></Column>
+            <Column field="description" header="策划编辑" style={{ minWidth: '4rem' }}></Column>
+          </DataTable>
         </div>
       </Card>
-
-
 
       <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
         {product.image && <img src={`https://primefaces.org/cdn/primereact/images/product/${product.image}`} alt={product.image} className="product-image block m-auto pb-3" />}
@@ -329,16 +324,17 @@ export default function ProductsDemo(props) {
           <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
           {product && (
             <span>
-              Are you sure you want to delete <b>{product.name}</b>?
+              Are you sure you want to delete <b>{product.id}</b>?
             </span>
           )}
         </div>
       </Dialog>
 
-      <Dialog visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
+      <Dialog
+        visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
         <div className="confirmation-content">
           <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-          {product && <span>Are you sure you want to delete the selected products?</span>}
+          {product && <span>确定要删除所有选中项吗?</span>}
         </div>
       </Dialog>
     </Card>

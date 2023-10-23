@@ -24,7 +24,7 @@ import { Tooltip } from 'primereact/tooltip'
 import { Tag } from 'primereact/tag'
 import { ProgressBar } from 'primereact/progressbar'
 import { LayoutList, TextSelect } from 'lucide-react'
-import { DialogComponent } from "../components/DialogComponent";
+import { DialogComponent } from "./DialogComponent";
 import { Card } from "@/components/ui/card";
 import { Label } from "@radix-ui/react-label";
 
@@ -107,7 +107,7 @@ export const InputButton: FC<InputButtonProps> = ({ title, customFunc, icon, col
 );
 
 
-const ProjectFeeForm = (props) => {
+const ProjectCostForm = (props) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -231,7 +231,7 @@ const ProjectFeeForm = (props) => {
 
 
   return (
-    <p className="m-0 h-screen overflow-scroll">
+    <p className="m-0 h-screen overflow-scroll w-8 flex mx-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
           <div className='space-y-5'>
@@ -363,7 +363,7 @@ const ProjectFeeForm = (props) => {
                 </div>
               </div>
             </Panel>
-            <Panel header="付款标准">
+            {/* <Panel header="付款标准">
 
               <div className="grid grid-cols-4 grid-rows-3 gap-4">
                 <div >
@@ -490,8 +490,8 @@ const ProjectFeeForm = (props) => {
                 headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                 chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
 
-            </Panel>
-            <Button className="w-full mt-6 bg-black text-white p-2 rounded-lg mb-6  hover:text-gray hover:border" type="submit">
+            </Panel> */}
+            <Button className="flex w-5 mt-6 mx-auto bg-black text-white p-2 rounded-lg mb-6  hover:text-gray hover:border" type="submit">
               提交
             </Button>
           </div >
@@ -501,4 +501,4 @@ const ProjectFeeForm = (props) => {
   )
 }
 
-export default ProjectFeeForm
+export default ProjectCostForm

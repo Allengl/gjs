@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { use } from 'react'
 import {
   Tooltip,
   TooltipContent,
@@ -7,8 +7,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Settings } from 'lucide-react'
-
-
 
 const TooltipComponent = () => {
   return (

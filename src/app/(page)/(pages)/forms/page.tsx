@@ -1,14 +1,10 @@
 import React from 'react'
-import ProjectFeeTable from './DataTable'
-import ProjectFeeForm from './ProjectFeeForm'
+import ProjectCostFrom from '../components/ProjectCostForm'
 
-
-const Froms = (props) => {
+const page = (props) => {
   return (
-    <div className='flex flex-wrap lg:flex-nowrap justify-center'>
-      <ProjectFeeTable />
-    </div>
+    <ProjectCostFrom />
   )
 }
 
-export default Froms
+export default page
