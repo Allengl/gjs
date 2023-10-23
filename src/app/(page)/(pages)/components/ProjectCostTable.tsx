@@ -18,6 +18,8 @@ import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { Card } from 'primereact/card';
 import ProjectFeeForm from './ProjectCostForm';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 
 interface Product {
@@ -46,6 +48,7 @@ export default function ProjectCostTable(props) {
   const [globalFilter, setGlobalFilter] = useState<string>('');
   const toast = useRef<Toast>(null);
   const dt = useRef<DataTable<Product[]>>(null);
+  const router = useRouter();
 
   useEffect(() => {
     ProjectFeeService.getProducts().then((data) => setProducts(data));
@@ -196,7 +199,7 @@ export default function ProjectCostTable(props) {
   const rightToolbarTemplate = () => {
     return (
       <div className="flex ml-4 flex-wrap gap-5">
-        <Button label="导出" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+        {/* <Button label="导出" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} /> */}
         <Button label="审批记录" icon="pi pi-file" className="p-button-list" />
       </div>
     )
@@ -214,20 +217,20 @@ export default function ProjectCostTable(props) {
   );
   const productDialogFooter = (
     <React.Fragment>
-      <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-      <Button label="Save" icon="pi pi-check" onClick={saveProduct} />
+      <Button label="取消" icon="pi pi-times" outlined onClick={hideDialog} />
+      <Button label="保存" icon="pi pi-check" onClick={saveProduct} />
     </React.Fragment>
   );
   const deleteProductDialogFooter = (
     <React.Fragment>
-      <Button label="No" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
-      <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
+      <Button label="否" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
+      <Button label="是" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
     </React.Fragment>
   );
   const deleteProductsDialogFooter = (
     <React.Fragment>
-      <Button label="No" icon="pi pi-times" outlined onClick={hideDeleteProductsDialog} />
-      <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
+      <Button label="否" icon="pi pi-times" outlined onClick={hideDeleteProductsDialog} />
+      <Button label="是" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
     </React.Fragment>
   );
 
@@ -235,7 +238,7 @@ export default function ProjectCostTable(props) {
     <Card className='w-full'>
       <Card title="项目费用单" className='grid grid-cols-1 md:flex flex-row'>
         <Toast ref={toast} />
-        <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+        <Toolbar className="mb-4" start={leftToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
         <div className='mt-2'>
           <DataTable
             showGridlines
@@ -247,20 +250,26 @@ export default function ProjectCostTable(props) {
                 setSelectedProducts(e.value);
               }
             }}
+            editMode="row"
             dataKey="id" paginator rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter}
+            currentPageReportTemplate="{first} to {last} of {totalRecords}" globalFilter={globalFilter}
             header={header}>
             <Column selectionMode="multiple" exportable={false}></Column>
-            <Column field="code" header="费用记录类型"
-              style={{ width: '10rem', minWidth: '10rem' }}></Column>
-            <Column field="name" header="对象号" style={{ minWidth: '4rem' }}></Column>
-            <Column field="description" header="对象描述" style={{ minWidth: '4rem' }}></Column>
-            <Column field="description" header="所属部门" style={{ minWidth: '4rem' }}></Column>
-            <Column field="description" header="书名" style={{ minWidth: '4rem' }}></Column>
-            <Column field="description" header="物料号" style={{ minWidth: '4rem' }}></Column>
-            <Column field="description" header="策划编辑" style={{ minWidth: '4rem' }}></Column>
+            <Column sortable field="code" header="费用记录类型"
+              style={{ width: '10rem', minWidth: '10rem' }} />
+            <Column sortable field="name" header="对象号" style={{ minWidth: '4rem' }} />
+            <Column sortable field="description" header="对象描述" style={{ minWidth: '4rem' }}></Column>
+            <Column sortable field="description" header="所属部门" style={{ minWidth: '4rem' }}></Column>
+            <Column sortable field="description" header="书名" style={{ minWidth: '4rem' }}></Column>
+            <Column sortable field="description" header="物料号" style={{ minWidth: '4rem' }}></Column>
+            <Column sortable field="description" header="策划编辑" style={{ minWidth: '4rem' }}></Column>
+            <Column header="操作" body={(rowData) => (
+              <Link href={`/details/${rowData.id}`}>
+                <p className='text-teal-300'>编辑</p>
+              </Link>
+            )} style={{ width: '6rem', alignItems: 'center' }} />
           </DataTable>
         </div>
       </Card>

@@ -1,6 +1,6 @@
 
 'use client'
-import React from 'react';
+import React, { useState } from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 import { links } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
@@ -9,6 +9,8 @@ import { BiLogoFirebase } from 'react-icons/bi';
 
 const Sidebar = () => {
   const { activeMenu, setActiveMenu, screenSize } = useStateContext();
+  const [activeLinkName, setActiveLinkName] = useState<string>('expenseBill');
+
 
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
@@ -49,13 +51,19 @@ const Sidebar = () => {
                   <Link
                     href={`/${link.name}`}
                     key={link.name}
-                    onClick={handleCloseSideBar}
+                    onClick={()=>{
+                      handleCloseSideBar(),
+                      setActiveLinkName(link.name)
+                    }}
+                    style={{ 
+                      backgroundColor: activeLinkName === link.name ? '#f9f9fa' : '',
+                    }}
                     className={(({ isActive }: { isActive: boolean }): string =>
                       isActive ? activeLink : normalLink
                     )({ isActive })}
                   >
                     {link.icon}
-                    <span className="capitalize ">{link.name}</span>
+                    <span className="capitalize ">{link.description}</span>
                   </Link>
                 ))}
               </div>

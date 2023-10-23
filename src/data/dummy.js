@@ -471,25 +471,26 @@ export const employeesGrid = [
 ];
 
 export const links = [
-  {
-    title: 'Dashboard',
-    links: [
-      {
-        name: 'home',
-        icon: <FiShoppingBag />,
-      },
-    ],
-  },
-
+  // {
+  //   title: 'Dashboard',
+  //   links: [
+  //     {
+  //       name: 'home',
+  //       icon: <FiShoppingBag />,
+  //     },
+  //   ],
+  // },
   {
     title: 'Pages',
     links: [
       {
-        name: 'tables',
+        name: 'expenseBill',
+        description: '项目费用单',
         icon: <ScrollText size={16} />,
       },
       {
-        name: 'forms',
+        name: 'epprovalRecords',
+        description: '审批记录',
         icon: <IoMdContacts />,
       },
       // {
