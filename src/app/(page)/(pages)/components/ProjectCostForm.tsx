@@ -15,7 +15,7 @@ import Link from "next/link"
 import { useToast } from "@/components/ui/use-toast"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Button } from 'primereact/button';
 import React, { FC, useRef, useState } from 'react'
 import { Textarea } from "@/components/ui/textarea"
 import { FileUpload } from 'primereact/fileupload';
@@ -27,6 +27,7 @@ import { LayoutList, TextSelect } from 'lucide-react'
 import { DialogComponent } from "./DialogComponent";
 import { Card } from "@/components/ui/card";
 import { Label } from "@radix-ui/react-label";
+import Image from "next/image";
 
 
 interface InputButtonProps {
@@ -34,7 +35,8 @@ interface InputButtonProps {
   customFunc: () => void,
   icon: React.ReactNode,
   color: string,
-  dotColor?: string
+  dotColor?: string,
+  disable?: boolean
 }
 
 
@@ -56,22 +58,23 @@ const formSchema = z
   })
 
 
-const ReusableForm = ({ form, name, label, placeholder, className }: {
+const ReusableForm = ({ form, name, label, disable, placeholder, className }: {
   form: any
   name?: string
   label?: string
   placeholder?: string
   className?: string
+  disable?: boolean
 }) => {
   return (
     <FormField
       control={form.control}
-      name={name}
+      name={name!}
       render={({ field }) => (
         <FormItem>
           <FormLabel dangerouslySetInnerHTML={{ __html: label || '&nbsp;' }}></FormLabel>
           <FormControl>
-            <Input className={className} placeholder={placeholder} {...field} />
+            <Input disabled={disable} className={className} placeholder={placeholder} {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -107,12 +110,12 @@ export const InputButton: FC<InputButtonProps> = ({ title, customFunc, icon, col
 );
 
 
-const ProjectCostForm = (props) => {
+const ProjectCostForm = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      username: "q11111",
       email: "",
       password: "",
       confirmPassword: ""
@@ -127,6 +130,7 @@ const ProjectCostForm = (props) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
+
         username: values.username,
         email: values.email,
         password: values.password
@@ -201,7 +205,7 @@ const ProjectCostForm = (props) => {
     return (
       <div className="flex align-items-center flex-wrap">
         <div className="flex align-items-center" style={{ width: '40%' }}>
-          <img alt={file.name} role="presentation" src={file.objectURL} width={100} />
+          <Image alt={file.name} role="presentation" src={file.objectURL} width={100} />
           <span className="flex flex-column text-left ml-3">
             {file.name}
             <small>{new Date().toLocaleDateString()}</small>
@@ -231,22 +235,22 @@ const ProjectCostForm = (props) => {
 
 
   return (
-    <p className="m-0 h-screen overflow-scroll w-8 flex mx-auto">
+    <Card className="m-0 h-screen overflow-scroll w-8 flex mx-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
           <div className='space-y-5'>
             <Panel header="项目信息">
               <div className="grid grid-cols-4 grid-rows-6 gap-3">
                 <div className="col-span-2">
-                  <ReusableForm form={form} name='username' label='凭证编号：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='username' label='凭证编号：' placeholder='' />
                 </div>
                 <div className="row-start-2">
-                  <ReusableForm form={form} name='' label='WBS元素：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='WBS元素：' placeholder='' />
                 </div>
                 <div className="col-span-3 row-start-2">
                   <div className="flex">
                     <div className="flex-grow">
-                      <ReusableForm form={form} name='' label='' placeholder='' />
+                      <ReusableForm disable={true} form={form} name='' label='' placeholder='' />
                     </div>
                     <div className='mt-4'>
                       <DialogComponent title="WBS元素">
@@ -269,68 +273,68 @@ const ProjectCostForm = (props) => {
                   </div>
                 </div>
                 <div className="row-start-3">
-                  <ReusableForm form={form} name='' label='物料号：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='物料号：' placeholder='' />
                 </div>
                 <div className="col-span-1 row-start-3">
-                  <ReusableForm form={form} name='' label='所属部门：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='所属部门：' placeholder='' />
                 </div>
                 <div className="col-span-2 row-start-3">
-                  <ReusableForm form={form} name='' label='' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='' placeholder='' />
                 </div>
                 <div className="col-span-4 row-start-4">
-                  <ReusableForm form={form} name='' label='书名：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='书名：' placeholder='' />
                 </div>
                 <div className="col-span-3 row-start-5">
-                  <ReusableForm form={form} name='' label='著译者：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='著译者：' placeholder='' />
                 </div>
                 <div className="col-start-4 row-start-5">
-                  <ReusableForm form={form} name='' label='策划编辑：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='策划编辑：' placeholder='' />
                 </div>
                 <div className="row-start-6">
-                  <ReusableForm form={form} name='' label='创建人：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='创建人：' placeholder='' />
                 </div>
                 <div className="row-start-6">
-                  <ReusableForm form={form} name='' label='创建日期：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='创建日期：' placeholder='' />
                 </div>
                 <div className="row-start-6">
-                  <ReusableForm form={form} name='' label='最后修改人：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='最后修改人：' placeholder='' />
                 </div>
                 <div className="row-start-6">
-                  <ReusableForm form={form} name='' label='最后修改日期：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='最后修改日期：' placeholder='' />
                 </div>
               </div>
             </Panel>
             <Panel className='hidden' header="费用计入">
               <div className="grid grid-cols-3 grid-rows-3 gap-4">
                 <div >
-                  <ReusableForm form={form} name='' label='内部订单：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='内部订单：' placeholder='' />
                 </div>
                 <div className="col-span-2">
-                  <ReusableForm form={form} name='' label='' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='' placeholder='' />
                 </div>
                 <div className="row-start-2">
-                  <ReusableForm form={form} name='' label='费用开支范围：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='费用开支范围：' placeholder='' />
                 </div>
                 <div className="row-start-3">
-                  <ReusableForm form={form} name='' label='公司代码：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='公司代码：' placeholder='' />
                 </div>
                 <div className="row-start-3">
-                  <ReusableForm form={form} name='' label='申请人编号：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='申请人编号：' placeholder='' />
                 </div>
                 <div className="row-start-3">
-                  <ReusableForm form={form} name='' label='管理员：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='管理员：' placeholder='' />
                 </div>
               </div>
             </Panel>
             <Panel header="费用计入">
               <div className="grid grid-cols-3 grid-rows-2 gap-4">
                 <div >
-                  <ReusableForm form={form} name='' label='WBS元素：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='WBS元素：' placeholder='' />
                 </div>
                 <div className="col-span-2">
                   <div className="flex">
                     <div className="flex-grow">
-                      <ReusableForm form={form} name='' label='' placeholder='' />
+                      <ReusableForm disable={true} form={form} name='' label='' placeholder='' />
                     </div>
                     <div className='mt-4'>
                       <DialogComponent title="WBS元素">
@@ -342,15 +346,15 @@ const ProjectCostForm = (props) => {
                   </div>
                 </div>
                 <div className="row-start-2">
-                  <ReusableForm form={form} name='' label='公司代码：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='公司代码：' placeholder='' />
                 </div>
                 <div className="row-start-2">
-                  <ReusableForm form={form} name='' label='申请人编号：' placeholder='' />
+                  <ReusableForm disable={true} form={form} name='' label='申请人编号：' placeholder='' />
                 </div>
                 <div className="row-start-2">
                   <div className="flex">
                     <div className="flex-grow">
-                      <ReusableForm form={form} name='' label='管理员：' placeholder='' />
+                      <ReusableForm disable={true} form={form} name='' label='管理员：' placeholder='' />
                     </div>
                     <div className='mt-4'>
                       <DialogComponent title="WBS元素">
@@ -491,13 +495,30 @@ const ProjectCostForm = (props) => {
                 chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
 
             </Panel> */}
-            <Button className="flex w-5 mt-6 mx-auto bg-black text-white p-2 rounded-lg mb-6  hover:text-gray hover:border" type="submit">
-              提交
-            </Button>
+            {/* <div className="flex justify-between ">
+              <Button className="mt-6 w-1/12 mx-auto bg-black text-white p-2 rounded-lg mb-6  hover:text-gray hover:border" type="submit">
+                提交
+              </Button>
+              <Button className="mt-6 w-1/12 mx-auto bg-black text-white p-2 rounded-lg mb-6  hover:text-gray hover:border" type="submit">
+                提交
+              </Button>
+              <Button className="mt-6 w-1/12 mx-auto bg-black text-white p-2 rounded-lg mb-6  hover:text-gray hover:border" type="submit">
+                提交
+              </Button>
+            </div> */}
+            <Panel header="审批意见">
+              <div>
+                <Textarea placeholder="请填写审批意见." />
+              </div>
+            </Panel>
+            <div className="flex ml-4 justify-space gap-5">
+              <Button label="同意" icon="pi pi-check" severity="success" />
+              <Button label="驳回" icon="pi pi-times" severity="danger" />
+            </div>
           </div >
         </form>
       </Form>
-    </p>
+    </Card>
   )
 }
 

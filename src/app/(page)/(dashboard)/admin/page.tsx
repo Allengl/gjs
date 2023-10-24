@@ -1,4 +1,3 @@
-import Grid from '@/components/Grid';
 import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
 
@@ -9,7 +8,6 @@ const page = async () => {
     return (
       <>
         <h2 className='text-2xl'>Admin page - welcome back {session?.user.username}</h2>
-        <Grid />
       </>
     )
   }

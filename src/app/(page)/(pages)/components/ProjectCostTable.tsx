@@ -20,6 +20,7 @@ import { Card } from 'primereact/card';
 import ProjectFeeForm from './ProjectCostForm';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { TableRowActions } from './TableRowAction';
 
 
 interface Product {
@@ -266,10 +267,12 @@ export default function ProjectCostTable(props) {
             <Column sortable field="description" header="物料号" style={{ minWidth: '4rem' }}></Column>
             <Column sortable field="description" header="策划编辑" style={{ minWidth: '4rem' }}></Column>
             <Column header="操作" body={(rowData) => (
-              <Link href={`/details/${rowData.id}`}>
-                <p className='text-teal-300'>编辑</p>
-              </Link>
-            )} style={{ width: '6rem', alignItems: 'center' }} />
+              // <Link href={`/expenseBill/${rowData.id}`}>
+              //   <p className='text-teal-300 pi-ellipsis-h
+              //   '>详情</p>
+              // </Link>
+              <TableRowActions row={rowData} />
+            )} style={{ width: '6rem' }} />
           </DataTable>
         </div>
       </Card>

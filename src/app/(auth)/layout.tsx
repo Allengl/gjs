@@ -31,8 +31,7 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => {
             className="absolute hidden bottom-10 right-6 p-6 bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block"
           >
             <span className="text-white text-xl"
-              >We've been uesing Untitle to kick"<br />start every new project
-              and can't <br />imagine working without it."
+            >Welcome !
             </span>
           </div>
         </div>

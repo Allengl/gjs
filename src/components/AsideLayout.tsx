@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeftRight, CircleDollarSign, Home, User2, ChevronDown, ChevronRight } from "lucide-react";
 import { useRouter, usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 const buttons = [
   {
@@ -81,7 +82,7 @@ const AsideLayout = () => {
   return (
     <aside className="sticky h-screen w-1/6 bg-gray-100 text-gray-800 p-4">
       <div className="flex items-center mb-4 space-x-1">
-        <img
+        <Image
           src="https://i.postimg.cc/66kPCQ8J/gl.png"
           alt=""
           className="w-10 h-10 rounded-full"
